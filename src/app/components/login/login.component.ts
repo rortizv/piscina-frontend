@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginResponseModel } from 'src/app/interfaces/LoginResponseModel';
 import { AuthService } from '../../services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { LocalDataService } from 'src/app/services/local-data.service';
@@ -15,7 +14,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
   [x: string]: any;
-  //public form: FormGroup;
   public form: FormGroup;
   public loading: boolean = false;
 
@@ -25,7 +23,7 @@ export class LoginComponent implements OnInit {
               private messageService: MessageService,
               public globalService: GlobalService,
               private _snackBar: MatSnackBar
-  ) { }
+  ) { this.form = new FormGroup({}); }
 
   ngOnInit(): void {
     this.buildForm();
@@ -48,9 +46,9 @@ export class LoginComponent implements OnInit {
       username: this.form.value.username,
       password: this.form.value.password
     }).subscribe(
-      (response: LoginResponseModel) => {
+      (response: any) => {
         //Se ejecuta cuando la respuesta es correcta
-        this.authService.setToken(response.token);
+        this.authService.setToken(response.success);
         this.success();
         this.fakeLoading();
         this.router.navigate(['/dashboard']);

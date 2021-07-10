@@ -19,8 +19,7 @@ export class CrearUsuarioComponent implements OnInit {
   constructor(private fb: FormBuilder,
               private _usuarioService: UsuarioService,
               private router: Router,
-              private messageService: MessageService,
-              private _snackbar: MatSnackBar) { 
+              private messageService: MessageService) { 
     this.form = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],

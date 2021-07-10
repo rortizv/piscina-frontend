@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { LoginModel } from '../interfaces/LoginModel';
-import { LoginResponseModel } from '../interfaces/LoginResponseModel';
 import { LocalDataService } from './local-data.service';
 import { TokenModel } from '../interfaces/TokenModel';
 import jwt_decode from 'jwt-decode';
@@ -36,10 +35,10 @@ export class AuthService {
     return this.localDataService.getItem(this.NAME_TOKEN);
   }
 
-  login(userData: LoginModel): Observable<LoginResponseModel> {
+  login(userData: LoginModel): Observable<any> {
     const endpoint = 'api/usuarios/login';
     const url = `${this.API_URL}${endpoint}`;
-    return this.http.post<LoginResponseModel>(url, userData, {​​ headers: this.headers });
+    return this.http.post<any>(url, userData, {​​ headers: this.headers });
   }
 
   hasTokenSession() {

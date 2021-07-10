@@ -43,7 +43,8 @@ export class UsuariosComponent implements OnInit {
     this.form = new FormGroup({
       username: new FormControl('', [Validators.email]),
       password: new FormControl('', [Validators.minLength(6)]),
-      torre_apto: new FormControl('', [Validators.required])
+      torre_apto: new FormControl('', [Validators.required]),
+      tipo_usuario: new FormControl('')
     })
   }
 
@@ -62,7 +63,7 @@ export class UsuariosComponent implements OnInit {
   showAdminOptions(){
     const user = this.authService.getCurrentUser();
     const role = user.role;
-    this.isAdmin = (role == "Administrador")?true : false;
+    this.isAdmin = (role == "administrador")?true : false;
   }
 
   ngAfterViewInit() {
