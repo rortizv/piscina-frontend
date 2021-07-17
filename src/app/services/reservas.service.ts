@@ -1,4 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Reserva } from '../interfaces/reserva';
 
 @Injectable({
@@ -6,25 +9,37 @@ import { Reserva } from '../interfaces/reserva';
 })
 export class ReservasService {
 
-  listReservas: Reserva[] = [
-    { id_reserva: 1, fecha_reserva: new Date(2021,7,25), turno: '1. De 9:00 am - 11:00 am', id_usuario: 1 },
-    { id_reserva: 2, fecha_reserva: new Date(2021,7,25), turno: '2. De 11:00 am - 1:00 pm', id_usuario: 3 },
-    { id_reserva: 3, fecha_reserva: new Date(2021,7,25), turno: '3. De 2:00 pm - 4:00 pm', id_usuario: 2 },
-    { id_reserva: 4, fecha_reserva: new Date(2021,7,25), turno: '4. De 4:00 pm - 6:00 pm', id_usuario: 4 },
-  ]
+  private API_URL: string;
+  private headers: HttpHeaders;
+  private jwt: string;
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) {
+    this.API_URL = environment.API_URL_CORE;
+    this.jwt = localStorage.getItem('JWT') || '{}';
+    this.headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('authorization', `${this.jwt}`)
+      .set('Accept', 'application/json');
+  }
 
-  getReserva() {
-    return this.listReservas.slice();
+  listarReservas(filter?: Date): Observable<Array<Reserva>> {
+    const endpoint = `api/reservas/${filter}`;
+    const url = `${this.API_URL}${endpoint}`;
+    return this.http.get<Array<Reserva>>(url, { headers: this.headers });
   }
 
   eliminarReserva(id_reserva: number) {
-    this.listReservas.splice(id_reserva, 1);
+    const endpoint = `api/reservas`;
+    const url = `${this.API_URL}${endpoint}${id_reserva.valueOf}`;
+    return this.http.delete<Reserva>(url, { headers: this.headers });
   }
 
-  agregarReserva(reserva: Reserva) {
-    this.listReservas.unshift(reserva);
+  agregarReserva(reserva: Reserva): Observable<Reserva> {
+    const endpoint = `api/reservas/crear-reserva`;
+    const url = `${this.API_URL}${endpoint}`;
+    return this.http.post<Reserva>(url, reserva, { headers: this.headers });
   }
 
 }

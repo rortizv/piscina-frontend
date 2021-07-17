@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
@@ -36,6 +37,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatGridListModule,
     MatIconModule,
     MatInputModule,
+    MatNativeDateModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSelectModule,
@@ -56,6 +58,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatGridListModule,
     MatIconModule,
     MatInputModule,
+    MatNativeDateModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatSelectModule,

@@ -1,3 +1,73 @@
+<!-- <h3 mat-dialog-title>Para la reserva con fecha XXXX</h3>
+<div mat-dialog-content>
+  <p>Escoja un propietario:</p>
+  <mat-form-field appearance="fill">
+    <mat-label>Propietario</mat-label>
+    <mat-select>
+      <mat-option *ngFor="let food of foods" [value]="food.value">
+        {{food.viewValue}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="flexbox-container">
+    <a class="pointer" (click)="closeModal()" style="color: #FF0000;" matTooltip="Cancelar">
+        <mat-icon class="myButtons">cancel</mat-icon>
+    </a>
+    <a class="pointer" (click)="agregarReserva()" style="color: #61cc4b;" matTooltip="Guardar">
+      <mat-icon class="myButtons">save</mat-icon>
+    </a>
+</div> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="container">
     <mat-toolbar>
         <span>Crear Reserva</span>
@@ -7,14 +77,8 @@
             <mat-grid-list cols="4" rowHeight="70px" class="myInputs">
                 <mat-grid-tile [colspan]="4" [rowspan]="1">
                     <mat-form-field class="ancho">
-                        <mat-label></mat-label>
-                        <input matInput autocomplete="off" formControlName="username">
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="4" [rowspan]="1">
-                    <mat-form-field class="ancho">
                         <mat-label>Escoja una fecha</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="fecha_reserva">
+                        <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="fecha_reserva">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
@@ -22,7 +86,7 @@
                 <mat-grid-tile [colspan]="4" [rowspan]="1">
                     <mat-form-field class="ancho">
                         <mat-label>Turno</mat-label>
-                        <mat-select formControlName="turno">
+                        <mat-select formControlName="turno_txt">
                             <mat-option *ngFor="let element of turnos" [value]="element">
                               {{element}}
                             </mat-option>
@@ -32,11 +96,11 @@
                 <mat-grid-tile [colspan]="4" [rowspan]="1">
                     <mat-form-field class="ancho">
                         <mat-label>Propietario</mat-label>
-                        <input matInput autocomplete="off" formControlName="torre_apto">
+                        <input matInput [min]="minDate" autocomplete="off" formControlName="torre_apto">
                     </mat-form-field>
                 </mat-grid-tile>
             </mat-grid-list>
-            <button mat-mini-fab matTooltip="Atrás" routerLink="/dashboard/usuarios">
+            <button mat-mini-fab matTooltip="Atrás" routerLink="/dashboard/reservas">
                 <mat-icon>arrow_back</mat-icon>
             </button>
             <button type="submit" [disabled]="form.invalid" mat-mini-fab color="primary" matTooltip="Guardar">

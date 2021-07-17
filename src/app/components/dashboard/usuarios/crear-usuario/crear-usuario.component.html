@@ -25,9 +25,9 @@
                 </mat-grid-tile>
                 <mat-grid-tile [colspan]="4" [rowspan]="1">
                     <mat-form-field class="ancho">
-                        <mat-label>Tipo Usuario</mat-label>
-                        <mat-select formControlName="tipo_usuario">
-                            <mat-option *ngFor="let element of tiposUsuarios" [value]="element">
+                        <mat-label>Rolename</mat-label>
+                        <mat-select formControlName="rolename">
+                            <mat-option *ngFor="let element of rolenames" [value]="element">
                               {{element}}
                             </mat-option>
                         </mat-select>
@@ -37,7 +37,7 @@
             <button mat-mini-fab matTooltip="Atrás" routerLink="/dashboard/usuarios">
                 <mat-icon>arrow_back</mat-icon>
             </button>
-            <button type="submit" (click)="crearUsuario()" [disabled]="form.invalid" mat-mini-fab color="primary" matTooltip="Guardar">
+            <button type="submit" [disabled]="form.invalid" mat-mini-fab color="primary" matTooltip="Guardar">
                 <mat-icon>save</mat-icon>
             </button>
         </form>          

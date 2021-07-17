@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { UsuarioService } from '../../../../services/usuario.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessageService } from 'src/app/services/message.service';
+import { RolesRequestModel } from 'src/app/interfaces/RolesRequestModel';
 
 @Component({
   selector: 'app-crear-usuario',
@@ -13,45 +13,59 @@ import { MessageService } from 'src/app/services/message.service';
 })
 export class CrearUsuarioComponent implements OnInit {
 
-  tiposUsuarios: any[] = ['administrador', 'propietario'];
-  form: FormGroup;
+  private EMAIL_REGEXP: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  public roles: Array<RolesRequestModel>;
+  public rolenames: any[] = ['administrador', 'propietario'];
+  public form: FormGroup;
 
-  constructor(private fb: FormBuilder,
-              private _usuarioService: UsuarioService,
-              private router: Router,
-              private messageService: MessageService) { 
-    this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
-      torre_apto: ['', Validators.required],
-      tipo_usuario: ['', Validators.required]
-    });
+  constructor(
+    private _usuarioService: UsuarioService,
+    private messageService: MessageService,
+    private router: Router
+  ) { 
+    this.form = new FormGroup({}); 
+    this.roles = new Array<RolesRequestModel>();
   }
 
   ngOnInit(): void {
+    this.getRoles();
+    this.buildForm();
+  }
+
+  buildForm() {
+    this.form = new FormGroup({
+      username: new FormControl('', [Validators.required, Validators.pattern(this.EMAIL_REGEXP)]),
+      password: new FormControl('', [Validators.required, Validators.min(6)]),
+      torre_apto: new FormControl('', [Validators.required, Validators.minLength(5)]),
+      rolename: new FormControl('', [Validators.required]),
+    });
   }
 
   crearUsuario() {
-      if (this.form.invalid) {
-        this.messageService.showMessage("LOS CAMPOS MARCADOS EN ROJO DEBEN SER VERIFICADOS");
-        return;
-      }
-
-          this._usuarioService.crearUsuario(this.form.value).subscribe(
-            (response: Usuario) => {
-              this.messageService.showMessage("USUARIO GUARDADO EXITOSAMENTE");
-              this.router.navigate(["/dashboard/usuarios"]);
-            },
-            (error: any) => {
-              this.messageService.showMessage("ERROR AL GUARDAR EL USUARIO");
-              this.router.navigate(["/dashboard/usuarios"]);
-            }
-          );
-        
-        (error: any) => {
-          this.messageService.showMessage("YA EXISTE UN REGISTRO CON LOS DATOS SUMISTRADOS");
-        }
-
+    if (this.form.invalid) {
+      this.messageService.showMessage("LOS CAMPOS MARCADOS EN ROJO DEBEN SER VERIFICADOS");
+      return;
+    }
+        this._usuarioService.crearUsuario(this.form.value).subscribe(
+          (response: Usuario) => {
+            this.messageService.showMessage("USUARIO GUARDADO EXITOSAMENTE");
+            this.router.navigate(["/dashboard/usuarios"]);
+          },
+          (error: any) => {
+            this.messageService.showMessage("ERROR AL GUARDAR EL USUARIO");
+            this.router.navigate(["/dashboard/usuarios"]);
+          }
+        );
   }
 
+  getRoles() {
+    this._usuarioService.getRoles().subscribe(
+      (response: Array<RolesRequestModel>) => {
+        this.roles = response;
+      },
+      (error: any) => {
+        this.messageService.showMessage("ERROR AL OBTENER LOS ROLES.");
+      }
+    )
+  }
 }

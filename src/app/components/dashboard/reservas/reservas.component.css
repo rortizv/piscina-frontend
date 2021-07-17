@@ -9,9 +9,16 @@ th {
 
 .pointer {
     cursor: pointer;
+    margin: 5px;
 }
 
 .mat-form-field {
     font-size: 14px;
     width: 100%;
+}
+
+.ancho {
+    width: 20%;
+    margin-top: 20px;
+    margin-left: 10px;
 }

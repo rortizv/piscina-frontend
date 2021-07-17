@@ -14,7 +14,7 @@ export class AuthService {
 
   private API_URL: string;
   private NAME_TOKEN: string;
-  private headers: HttpHeaders;
+  
 
   constructor(
     private http: HttpClient,
@@ -22,9 +22,7 @@ export class AuthService {
   ) { 
     this.API_URL = environment.API_URL_CORE;
     this.NAME_TOKEN = 'JWT';
-    this.headers = new HttpHeaders({
-      'Access-Control-Allow-Origin': '*'
-    });
+    
   }
 
   setToken(token: string): void {
@@ -38,7 +36,13 @@ export class AuthService {
   login(userData: LoginModel): Observable<any> {
     const endpoint = 'api/usuarios/login';
     const url = `${this.API_URL}${endpoint}`;
-    return this.http.post<any>(url, userData, {​​ headers: this.headers });
+    return this.http.post<any>(url, userData);
+  }
+
+  getRolenameUser(): boolean {
+    const decoded = jwt_decode(this.getToken()) as TokenModel;
+    console.log(decoded);
+    return decoded.rolename == "administrador";
   }
 
   hasTokenSession() {
@@ -71,8 +75,3 @@ export class AuthService {
     return decoded;
   }
 }
-
-// function jwt_decode(token: string): any {
-//   throw new Error('Function not implemented.');
-// }
-

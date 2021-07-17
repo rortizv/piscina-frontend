@@ -2,11 +2,14 @@
   <span>Reservas Piscina App</span>
 
   <span class="example-spacer"></span>
-  <button mat-button *ngFor="let item of menu" [routerLink]="item.redirect">{{ item.nombre }}</button>
 
-  <span class="example-spacer"></span>
+  <ng-container *ngFor="let item of menu">
+    <button mat-button [routerLink]="item.redirect">{{ item.nombre }}</button>
+  </ng-container>
 
-  <button routerLink="/logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+  <!-- <span class="example-spacer"></span> -->
+
+  <button routerLink="/logout" mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" matTooltip="Salir">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>

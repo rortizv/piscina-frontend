@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
   ) { this.form = new FormGroup({}); }
 
   ngOnInit(): void {
+    localStorage.clear();
     this.buildForm();
   }
 

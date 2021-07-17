@@ -4,7 +4,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Usuario } from 'src/app/interfaces/usuario';
 import { UsuarioService } from '../../../services/usuario.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageService } from 'src/app/services/message.service';
@@ -20,14 +19,13 @@ export class UsuariosComponent implements OnInit {
   public listUsuarios: Usuario[] = [];
   public form!: FormGroup;
   public isAdmin: boolean = false;
-  public displayedColumns: string[] = ['id_usuario', 'username', 'password', 'torre_apto', 'tipo_usuario', 'acciones'];
+  public displayedColumns: string[] = ['username', 'torre_apto', 'rolename', 'acciones'];
   public dataSource!: MatTableDataSource<Usuario>;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private _usuarioService: UsuarioService,
-              private _snackbar: MatSnackBar,
               private messageService: MessageService,
               private router: Router,
               private authService: AuthService) { }
@@ -42,9 +40,8 @@ export class UsuariosComponent implements OnInit {
   buildForm() {
     this.form = new FormGroup({
       username: new FormControl('', [Validators.email]),
-      password: new FormControl('', [Validators.minLength(6)]),
       torre_apto: new FormControl('', [Validators.required]),
-      tipo_usuario: new FormControl('')
+      rolename: new FormControl('')
     })
   }
 
@@ -76,19 +73,18 @@ export class UsuariosComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  editarUsuario(id_usuario: number) {
-
-  }
-
   eliminarUsuario(id_usuario: number) {
-    this._usuarioService.eliminarUsuario(id_usuario);
-    this.listarUsuarios();
-
-    this._snackbar.open('Usuario eliminado satisfactoriamente', '', {
-      duration: 2000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
-    })
+    // this._usuarioService.eliminarUsuario(id_usuario).subscribe(
+    //   (response: Usuario) => {
+    //     this.dataSource = new MatTableDataSource<Usuario>(response.id_usuario);
+    //     this.messageService.showMessage("USUARIO ELIMINADO EXITOSAMENTE");
+    //     this.router.navigate(["/dashboard/usuarios"]);
+    //   },
+    //     (error: any) => {
+    //     this.messageService.showMessage("ERROR AL ELIMINAR EL USUARIO");
+    //     this.router.navigate(["/dashboard/usuarios"]);
+    //   }
+    // );
   }
 
 }

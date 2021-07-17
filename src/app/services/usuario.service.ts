@@ -2,7 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { RolesRequestModel } from '../interfaces/RolesRequestModel';
 import { Usuario } from '../interfaces/usuario';
+import { ValidateUserModel } from '../interfaces/ValidateUserModel';
 
 @Injectable({
   providedIn: 'root'
@@ -25,18 +27,38 @@ export class UsuarioService {
   }
 
   listarUsuarios(): Observable<Array<Usuario>> {
-    const endpoint = `api/usuarios`;
+    const endpoint = `api/usuarios/listar`;
     const url = `${this.API_URL}${endpoint}`;
     return this.http.get<Array<Usuario>>(url, { headers: this.headers });
   }
 
+  listarUsuarioById(id_usuario: number): Observable<Array<Usuario>> {
+    const endpoint = `api/usuarios/`;
+    const url = `${this.API_URL}${endpoint}`;
+    return this.http.post<Array<Usuario>>(url, id_usuario, { headers: this.headers });
+  }
+
   eliminarUsuario(id_usuario: number) {
-    
+    const endpoint = `api/usuarios/`;
+    const url = `${this.API_URL}${endpoint}${id_usuario.valueOf}`;
+    return this.http.delete<Usuario>(url, { headers: this.headers });
   }
 
   crearUsuario(usuarioModel: Usuario): Observable<Usuario> {
     const endpoint = `api/usuarios/register`;
     const url = `${this.API_URL}${endpoint}`;
     return this.http.post<Usuario>(url, usuarioModel, { headers: this.headers });
+  }
+
+  getRoles(): Observable<Array<RolesRequestModel>> {
+    const endpoint = `api/roles`;
+    const url = `${this.API_URL}${endpoint}`;
+    return this.http.get<Array<RolesRequestModel>>(url, { headers: this.headers });
+  }
+
+  validateUser(validateUsername: string): Observable<string> {
+    const endpoint = `api/usuarios/validateUser`;
+    const url = `${this.API_URL}${endpoint}`;
+    return this.http.post<string>(url, validateUsername, { headers: this.headers });
   }
 }

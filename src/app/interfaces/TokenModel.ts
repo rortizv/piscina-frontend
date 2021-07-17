@@ -8,4 +8,5 @@ export interface TokenModel{
     exp: number;
     iss: string;
     aud: string;
+    rolename: string;
 }

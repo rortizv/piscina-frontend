@@ -1,9 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+//import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+//import { DialogData } from 'src/app/interfaces/DialogData';
 import { Reserva } from 'src/app/interfaces/reserva';
+import { MessageService } from 'src/app/services/message.service';
 import { ReservasService } from 'src/app/services/reservas.service';
+import * as moment from 'moment';
+
+interface Food {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-crear-reserva',
@@ -11,43 +19,68 @@ import { ReservasService } from 'src/app/services/reservas.service';
   styleUrls: ['./crear-reserva.component.css']
 })
 export class CrearReservaComponent implements OnInit {
-  turnos: any[] = [
-    '1. De 9:00 am - 11:00 am',
-    '2. De 11:00 am - 1:00 pm',
-    '3. De 2:00 pm - 4:00 pm',
-    '4. De 4:00 pm - 6:00 pm'
-  ];
+
+  // foods: Food[] = [
+  //   {value: 'steak-0', viewValue: 'Steak'},
+  //   {value: 'pizza-1', viewValue: 'Pizza'},
+  //   {value: 'tacos-2', viewValue: 'Tacos'}
+  // ];
+
   form: FormGroup;
+  
+  public minDate: Date = new Date();
+  public reservaModel: Array<Reserva>;
+  public turnos: any[] = [
+    'De 9:00 am - 11:00 am',
+    'De 11:00 am - 1:00 pm',
+    'De 2:00 pm - 4:00 pm',
+    'De 4:00 pm - 6:00 pm'
+  ];
 
-  constructor(private fb: FormBuilder,
-              private _reservaService: ReservasService,
-              private router: Router,
-              private _snackbar: MatSnackBar) { 
-    this.form = this.fb.group({
-      fecha_reserva: ['', Validators.required],
-      turno: ['', Validators.required]
-    });
-  }
-
-  ngOnInit(): void {
-  }
-
-  agregarReserva() {
-    const reserva: Reserva = {
-      id_reserva: this.form.value.id_reserva,
-      fecha_reserva: this.form.value.fecha_reserva,
-      turno: this.form.value.turno,
-      id_usuario: this.form.value.id_usuario
+  constructor(
+    // public dialogRef: MatDialogRef<any>,
+    // @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private _reservaService: ReservasService,
+    private messageService: MessageService,
+    private router: Router)
+    { 
+      this.form = new FormGroup({});
+      this.reservaModel = new Array<Reserva>();
     }
-
-    this._reservaService.agregarReserva(reserva);
-    this.router.navigate(['/dashboard/reservas']);
-
-    this._snackbar.open('Reserva creada satisfactoriamente', '', {
-      duration: 2000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
-    })
+    
+    ngOnInit(): void {
+      this.buildForm();
+    }
+    
+    buildForm() {
+      this.form = new FormGroup({
+        fecha_reserva: new FormControl('', [Validators.required]),
+        turno_txt: new FormControl('', [Validators.required]),
+        torre_apto: new FormControl('', [Validators.required])
+      })
+    }
+    
+    agregarReserva() {
+      let valorForm;
+      // if(this.form.get('fecha_reserva')) {
+      //   valorForm = this.form.get('fecha_reserva').value;
+      // }
+      //valorForm = this.form.get('fecha_reserva').value || new Date();
+      //const fechaFormateada = moment((valorForm).format  || new Date).format('YYYY-MM-DD');
+      this._reservaService.agregarReserva(this.form.value).subscribe(
+        (response: Reserva) => {
+          this.messageService.showMessage("RESERVA GUARDADA EXITOSAMENTE");
+          this.router.navigate(["/dashboard/reservas"]);
+        },
+          (error: any) => {
+          this.messageService.showMessage("ERROR");
+          this.router.navigate(["/dashboard/reservas"]);
+        }
+      );
   }
+
+  // closeModal(): void {
+  //   this.dialogRef.close();
+  // }
 
 }
