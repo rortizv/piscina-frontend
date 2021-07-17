@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { RolesRequestModel } from '../interfaces/RolesRequestModel';
 import { Usuario } from '../interfaces/usuario';
-import { ValidateUserModel } from '../interfaces/ValidateUserModel';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class UsuarioService {
     this.jwt = localStorage.getItem('JWT') || '{}';
     this.headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${this.jwt}`)
+      .set('Authorization', `${this.jwt}`)
       .set('Accept', 'application/json');
   }
 
@@ -56,9 +55,4 @@ export class UsuarioService {
     return this.http.get<Array<RolesRequestModel>>(url, { headers: this.headers });
   }
 
-  validateUser(validateUsername: string): Observable<string> {
-    const endpoint = `api/usuarios/validateUser`;
-    const url = `${this.API_URL}${endpoint}`;
-    return this.http.post<string>(url, validateUsername, { headers: this.headers });
-  }
 }
