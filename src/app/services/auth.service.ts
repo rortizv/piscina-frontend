@@ -20,7 +20,6 @@ export class AuthService {
     private http: HttpClient,
     private localDataService: LocalDataService
   ) { 
-    
     this.API_URL = environment.API_URL_CORE;
     this.NAME_TOKEN = 'JWT';
     

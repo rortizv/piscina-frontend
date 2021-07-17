@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  API_URL_CORE: 'https://piscina-backend.herokuapp.com/'
-  //API_URL_CORE: 'http://localhost:3000/'  
+  API_URL_CORE: 'http://localhost:3000/'  
 };
 
 /*
